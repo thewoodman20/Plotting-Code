@@ -6,7 +6,7 @@ import numpy as np
 
 def plot_joint_angles(mcap_file_path):
     timestamps = []
-    joint_velocity_data = []
+    joint_angle_data = []
     
     # Read the MCAP file
     with open(mcap_file_path, "rb") as f:
@@ -16,10 +16,10 @@ def plot_joint_angles(mcap_file_path):
         for schema, channel, message, ros_msg in reader.iter_decoded_messages(topics=["/robot_1/state/ground_truth"]): 
             timestamp = message.log_time / 1e9
             timestamps.append(timestamp)
-            joint_velocity_data.append(ros_msg.joints.position) 
+            joint_angle_data.append(ros_msg.joints.position) 
 
     timestamps = np.array(timestamps)
-    joint_velocity_data = np.array(joint_velocity_data) 
+    joint_angle_data = np.array(joint_angle_data) 
     timestamps = timestamps - timestamps[0]
 
 
@@ -32,9 +32,9 @@ def plot_joint_angles(mcap_file_path):
     
     # Create 12 subplots
     fig, axes = plt.subplots(4, 3, figsize=(15, 12))
-    fig.suptitle('Individual Joint Velocity', fontsize=16, fontweight='bold')
+    fig.suptitle('Individual Joint Angles', fontsize=16, fontweight='bold')
     for i, (ax, name) in enumerate(zip(axes.flat, joint_names)):
-        ax.plot(timestamps, joint_velocity_data[:, i], linewidth=1.5)
+        ax.plot(timestamps, joint_angle_data[:, i], linewidth=1.5)
         ax.set_title(name, fontsize=10, fontweight='bold')
         ax.set_xlabel('Time (s)', fontsize=8)
         ax.set_ylabel('Position (rad)', fontsize=8)

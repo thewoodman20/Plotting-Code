@@ -48,7 +48,7 @@ def plot_feet_velocity(mcap_file_path):
     
     fig.suptitle('Foot Position Over Time (X, Y, Z per Foot)', fontsize=16)
     plt.tight_layout()
-    plt.subplots_adjust(top=0.93)
+    #plt.subplots_adjust(top=0.93)
     plt.show()
 
 

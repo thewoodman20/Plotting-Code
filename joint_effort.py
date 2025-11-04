@@ -6,7 +6,7 @@ import numpy as np
 
 def plot_joint_effort(mcap_file_path):
     timestamps = []
-    joint_velocity_data = []
+    joint_effort_data = []
     
     # Read the MCAP file
     with open(mcap_file_path, "rb") as f:
@@ -16,10 +16,10 @@ def plot_joint_effort(mcap_file_path):
         for schema, channel, message, ros_msg in reader.iter_decoded_messages(topics=["/robot_1/state/ground_truth"]): 
             timestamp = message.log_time / 1e9
             timestamps.append(timestamp)
-            joint_velocity_data.append(ros_msg.joints.effort) 
+            joint_effort_data.append(ros_msg.joints.effort) 
 
     timestamps = np.array(timestamps)
-    joint_velocity_data = np.array(joint_velocity_data) 
+    joint_effort_data = np.array(joint_effort_data) 
     timestamps = timestamps - timestamps[0]
     
     joint_names = [
@@ -33,7 +33,7 @@ def plot_joint_effort(mcap_file_path):
     fig, axes = plt.subplots(4, 3, figsize=(15, 12))
     fig.suptitle('Individual Joint Effort', fontsize=16, fontweight='bold')
     for i, (ax, name) in enumerate(zip(axes.flat, joint_names)):
-        ax.plot(timestamps, joint_velocity_data[:, i], linewidth=1.5)
+        ax.plot(timestamps, joint_effort_data[:, i], linewidth=1.5)
         ax.set_title(name, fontsize=10, fontweight='bold')
         ax.set_xlabel('Time (s)', fontsize=8)
         ax.set_ylabel('Effort (Newtons)', fontsize=8)
